@@ -46,12 +46,9 @@ class DummyExtensionImpl extends Extension
 
 // Dont't place inside ActorSystemSpec object, since it will not be garbage collected and reference to system remains
 class FailingTestExtension(val system: ExtendedActorSystem) extends Extension {
-  // first time the actor is created
-  val ref = system.actorOf(Props.empty, "uniqueName")
-  // but the extension initialization fails
-  // second time it will throw exception when trying to create actor with same name,
-  // but we want to see the first exception every time
-  throw new FailingTestExtension.TestException
+  // Always fail, but 'hide' this from IntelliJ to avoid compilation issues:
+  if (42.toString == "42")
+    throw new FailingTestExtension.TestException
 }
 
 class ExtensionSpec extends WordSpec with Matchers {
